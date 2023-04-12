@@ -1,7 +1,7 @@
 require("dotenv").config({ path: __dirname + "/.env" });
 const express = require("express");
 const app = express();
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 8080;
 const { Configuration, OpenAIApi } = require("openai");
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient({
