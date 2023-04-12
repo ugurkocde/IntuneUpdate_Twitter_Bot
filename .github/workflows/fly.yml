@@ -11,6 +11,3 @@ jobs:
       - run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-      - run: flyctl apps restart intuneupdatev2
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
