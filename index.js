@@ -64,7 +64,7 @@ const interval = setInterval(tweetNewRows, 30 * 60 * 1000); // Poll the database
 // call the fetchBlogPosts function every minute
 setInterval(async () => {
   await fetchBlogPosts();
-}, 1 * 60 * 1000);
+}, 5 * 60 * 1000);
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
