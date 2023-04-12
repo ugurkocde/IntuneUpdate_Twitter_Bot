@@ -1,12 +1,16 @@
-# fly.toml file generated for intuneupdatev2222 on 2023-04-12T23:15:39+02:00
+# fly.toml file generated for intuneupdatev2 on 2023-04-12T23:26:46+02:00
 
-app = "intuneupdatev2222"
+app = "intuneupdatev2"
 kill_signal = "SIGINT"
 kill_timeout = 5
 primary_region = "ams"
 processes = []
 
+[build]
+  builder = "heroku/buildpacks:20"
+
 [env]
+  PORT = "8080"
 
 [experimental]
   auto_rollback = true
