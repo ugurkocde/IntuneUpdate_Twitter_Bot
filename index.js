@@ -63,7 +63,70 @@ const tweetNewRows = async () => {
   }
 };
 
-const interval = setInterval(tweetNewRows, 60 * 60 * 1000); // Poll the database every 10 minutes
+const getNewVideos = async (channelId, channelName) => {
+  try {
+    const response = await youtube.search.list({
+      part: "snippet",
+      channelId: channelId,
+      order: "date",
+      type: "video",
+      maxResults: 5,
+    });
+    const latestVideoDate = new Date(
+      response.data.items[0].snippet.publishedAt
+    );
+    if (latestVideoDate > lastCheckedDate) {
+      const latestVideoTitle = response.data.items[0].snippet.title;
+      const latestVideoLink = `https://www.youtube.com/watch?v=${response.data.items[0].id.videoId}`;
+      const tweetText = `New video on the ${channelName} YouTube channel: ${latestVideoTitle}\n\n${latestVideoLink}\n\n#Intune #Microsoft #YouTube`;
+      await twitterClient.v2.tweet(tweetText);
+      lastCheckedDate = latestVideoDate;
+      console.log(`Checked ${channelName} successfully`);
+    }
+  } catch (error) {
+    console.error(
+      `Error while getting new videos for ${channelName}: ${error.message}`
+    );
+  }
+};
+
+// Get new posts from the Tech Community page
+const getNewTechCommunityPosts = async () => {
+  try {
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.goto(
+      "https://techcommunity.microsoft.com/t5/intune-customer-success/bg-p/IntuneCustomerSuccess"
+    );
+    const latestPostLink = await page.$eval(
+      "div.blog-article-image-wrapper a",
+      (a) => a.href
+    );
+    const latestPostDate = await page.$eval(
+      "time.published",
+      (time) => new Date(time.dateTime)
+    );
+    if (latestPostDate > lastCheckedDate) {
+      const tweetText = `New blog post on Intune Customer Success: ${latestPostLink}\n\n#Intune #Microsoft`;
+      await twitterClient.v2.tweet(tweetText);
+      lastCheckedDate = latestPostDate;
+      console.log(`Checked the Tech Community page successfully`);
+    }
+    await browser.close();
+  } catch (error) {
+    console.error(
+      `Error while parsing the Tech Community page: ${error.message}`
+    );
+  }
+};
+
+// const interval = setInterval(tweetNewRows, 60 * 60 * 1000); // Poll the database every 10 minutes
+
+const interval = setInterval(() => {
+  tweetNewRows();
+  getNewVideos(channel.channelId, channel.channelName);
+  getNewTechCommunityPosts();
+}, 60 * 60 * 1000); // Poll every hour
 
 // call the fetchBlogPosts function every 5 minutes
 setInterval(async () => {

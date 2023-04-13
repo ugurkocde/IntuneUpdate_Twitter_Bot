@@ -9,7 +9,11 @@ const prisma = new PrismaClient();
 async function fetchBlogPosts() {
   // Read the feed URLs and author names from feeds.json
   const feeds = require("./feeds.json");
-  console.log(`[${new Date().toLocaleString()}] Found ${feeds.length} feeds.`);
+  console.log(
+    `[${new Date().toLocaleString("en-US", { timeZone: "CET" })}] Found ${
+      feeds.length
+    } feeds.`
+  );
 
   let addedCount = 0; // Counter for the number of blog posts added to the database
 
