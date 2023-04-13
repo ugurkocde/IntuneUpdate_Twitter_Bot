@@ -38,8 +38,12 @@ const tweetNewRows = async () => {
           messages: [{ role: "user", content: `${prompt}` }],
           temperature: 0.2,
         });
+        let truncatedTitle = title;
+        if (title.length > 40) {
+          truncatedTitle = title.slice(0, 40) + "...";
+        }
         const summary = aiResponse.data.choices[0].message.content;
-        const tweetText = `${title}:\n\n${summary}\n\n${author}`;
+        const tweetText = `${truncatedTitle}:\n\n${summary}\n\n${author}`;
         await twitterClient.v2.tweet(tweetText);
         console.log(`Tweeted: ${tweetText}`);
         await prisma.BlogPost.update({
@@ -59,7 +63,7 @@ const tweetNewRows = async () => {
   }
 };
 
-const interval = setInterval(tweetNewRows, 10 * 60 * 1000); // Poll the database every 10 minutes
+const interval = setInterval(tweetNewRows, 60 * 60 * 1000); // Poll the database every 10 minutes
 
 // call the fetchBlogPosts function every 5 minutes
 setInterval(async () => {

@@ -9,14 +9,13 @@ const prisma = new PrismaClient();
 async function fetchBlogPosts() {
   // Read the feed URLs and author names from feeds.json
   const feeds = require("./feeds.json");
-  console.log(`Found ${feeds.length} feeds.`);
+  console.log(`[${new Date().toLocaleString()}] Found ${feeds.length} feeds.`);
 
   let addedCount = 0; // Counter for the number of blog posts added to the database
 
   // Loop through each feed and fetch its blog posts
   for (const feed of feeds) {
-    // console.log(`Fetching RSS feed at ${feed.url}...`);
-    console.log(`Fetching RSS feed`);
+    console.log(`Fetching RSS feed at ${feed.url}...`);
 
     let parsedFeed;
     try {
@@ -42,7 +41,7 @@ async function fetchBlogPosts() {
       const response = await axios.get(item.link);
       const $ = cheerio.load(response.data);
 
-      title = $("h1").text().trim();
+      title = $("title").text().trim();
       content = $("content").text().trim();
 
       // If the content is empty, use Puppeteer to load the URL and extract the content
