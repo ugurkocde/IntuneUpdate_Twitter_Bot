@@ -12,9 +12,8 @@ const prisma = new PrismaClient({
   },
 });
 const puppeteer = require("puppeteer");
-const axios = require("axios");
-const cheerio = require("cheerio");
 
+const { fetchWhatsNew } = require("./scrape_whatsnew.js"); // import the function
 const { google } = require("googleapis");
 
 const youtubeApiKey = process.env.YouTube_API_KEY;
@@ -35,7 +34,7 @@ const { twitterClient } = require("./twitterClient.js");
 
 const youtubefeeds = require("./youtubefeeds.json");
 
-const { fetchBlogPosts } = require("./scrape.js"); // import the function
+const { fetchBlogPosts } = require("./scrape_blogs.js"); // import the function
 
 const tweetNewRows = async () => {
   try {
@@ -62,6 +61,36 @@ const tweetNewRows = async () => {
         await twitterClient.v2.tweet(tweetText);
         console.log(`Tweeted: ${tweetText}`);
         await prisma.BlogPost.update({
+          where: {
+            id: row.id,
+          },
+          data: {
+            tweeted: true,
+          },
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    });
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+const tweetNewCommits = async () => {
+  try {
+    const data = await prisma.WhatsNew.findMany({
+      where: {
+        tweeted: false,
+      },
+    });
+    data.forEach(async (row) => {
+      const { title, content, author, url } = row;
+      try {
+        const tweetText = `${title} by ${author}\n\n${url}`;
+        await twitterClient.v2.tweet(tweetText);
+        console.log(`Tweeted: ${tweetText}`);
+        await prisma.WhatsNew.update({
           where: {
             id: row.id,
           },
@@ -137,43 +166,23 @@ const getNewTechCommunityPosts = async () => {
   }
 };
 
-const getWhatsNew = async () => {
-  try {
-    const response = await axios.get(
-      "https://github.com/MicrosoftDocs/memdocs/commits/main/memdocs/intune/fundamentals/whats-new.md"
-    );
-    const html = response.data;
-    const $ = cheerio.load(html);
-    const latestCommitLink = $("a.sha").first().attr("href");
-    const latestCommitMessage = $("a.message").first().text().trim();
-    const latestCommitDate = new Date(
-      $("relative-time").first().attr("datetime")
-    );
-    if (latestCommitDate > lastCheckedDate) {
-      const tweetText = `New commit to Microsoft Intune What's New documentation: ${latestCommitMessage}\n\n${latestCommitLink}\n\n#Intune #Microsoft #GitHub`;
-      await twitterClient.v2.tweet(tweetText);
-      lastCheckedDate = latestCommitDate;
-      console.log(`Checked the What's New page successfully`);
-    }
-  } catch (error) {
-    console.error(`Error while parsing the What's New page: ${error.message}`);
-  }
-};
-
 // Poll the database every 10 minutes
-const interval = setInterval(tweetNewRows, 60 * 60 * 1000);
+const interval = setInterval(async () => {
+  await tweetNewRows();
+  await tweetNewCommits();
+}, 60 * 60 * 1000);
 
 // call the fetchBlogPosts function every 5 minutes
 setInterval(async () => {
-  await fetchBlogPosts();
+  //await fetchBlogPosts();
+  await fetchWhatsNew();
 
   for (const channel of youtubefeeds) {
     await getNewVideos(channel.channelId, channel.channelName);
   }
-
+  await tweetNewCommits();
   await getNewTechCommunityPosts();
-  await getWhatsNew();
-}, 5 * 60 * 1000);
+}, 1 * 60 * 1000);
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
