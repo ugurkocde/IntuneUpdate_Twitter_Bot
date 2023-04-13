@@ -87,35 +87,8 @@ const tweetNewCommits = async () => {
     data.forEach(async (row) => {
       const { title, author, url } = row;
       try {
-        const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
-        const page = await browser.newPage();
-        await page.goto(url);
-        const screenshot = await page.screenshot({
-          type: "png",
-          clip: {
-            x: 0,
-            y: 0,
-            width: 1200,
-            height: await page.evaluate(() => {
-              const el = document.querySelector(
-                ".clearfix.container-xl.px-3.px-md-4.px-lg-5.mt-4"
-              );
-              const { height } = el.getBoundingClientRect();
-              return height;
-            }),
-          },
-        });
-        await browser.close();
-        const mediaUpload = await twitterClient.v1.media.upload(
-          Buffer.from(screenshot),
-          {
-            type: "image/png",
-          }
-        );
-        const tweetText = `${title} by ${author}\n\n${url}`;
-        const tweet = await twitterClient.v2.tweet(`${tweetText}`, {
-          media_ids: [mediaUpload.media_id_string],
-        });
+        const tweetText = `Detected changes in the Whats New docs:\n\n${title} by ${author}\n\n${url}`;
+        await twitterClient.v2.tweet(tweetText);
         console.log(`Tweeted: ${tweetText}`);
         await prisma.WhatsNew.update({
           where: {
