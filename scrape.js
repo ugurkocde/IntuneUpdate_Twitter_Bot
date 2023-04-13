@@ -15,15 +15,14 @@ async function fetchBlogPosts() {
 
   // Loop through each feed and fetch its blog posts
   for (const feed of feeds) {
-    console.log(`Fetching RSS feed at ${feed.url}...`);
+    // console.log(`Fetching RSS feed at ${feed.url}...`);
+    console.log(`Fetching RSS feed`);
 
     let parsedFeed;
     try {
       const parser = new Parser();
       parsedFeed = await parser.parseURL(feed.url);
-      console.log(
-        `Fetched ${parsedFeed.items.length} blog posts from RSS feed.`
-      );
+      // console.log(`Fetched ${parsedFeed.items.length} blog posts from RSS feed.`);
     } catch (err) {
       console.error(`Error fetching RSS feed at ${feed.url}: ${err}`);
       continue; // Skip this feed and move on to the next one
@@ -48,9 +47,7 @@ async function fetchBlogPosts() {
 
       // If the content is empty, use Puppeteer to load the URL and extract the content
       if (!content) {
-        console.log(
-          `Content not found. Using Puppeteer to extract content for ${item.link}...`
-        );
+        // console.log(`Content not found. Using Puppeteer to extract content for ${item.link}...`);
 
         const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
         const page = await browser.newPage();
