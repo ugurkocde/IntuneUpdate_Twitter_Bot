@@ -87,7 +87,7 @@ const tweetNewCommits = async () => {
     data.forEach(async (row) => {
       const { title, url } = row;
       try {
-        const tweetText = `Detected changes in the "What's new in Microsoft Intune" docs:\n\nTitle: ${title} ↓\n\n${url}`;
+        const tweetText = `Detected changes in the "What's new in Microsoft Intune" docs:\n\n${title}\n\n#Intune #Microsoft\n\n${url}`;
         await twitterClient.v2.tweet(tweetText);
         console.log(`Tweeted: ${tweetText}`);
         await prisma.WhatsNew.update({
