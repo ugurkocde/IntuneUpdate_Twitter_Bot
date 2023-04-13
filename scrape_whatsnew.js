@@ -7,12 +7,12 @@ async function fetchWhatsNew() {
   console.log("Starting fetchWhatsNew function");
   const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
   const page = await browser.newPage();
-  console.log("Browser opened and new page created");
+  // console.log("Browser opened and new page created");
 
   await page.goto(
     "https://github.com/MicrosoftDocs/memdocs/commits/main/memdocs/intune/fundamentals/whats-new.md"
   );
-  console.log("Navigated to the GitHub page");
+  // console.log("Navigated to the GitHub page");
 
   // Get the list of commits
   const commitList = await page.$$eval(
@@ -61,7 +61,7 @@ async function fetchWhatsNew() {
   });
 
   await browser.close();
-  console.log("Browser closed");
+  // console.log("Browser closed");
 }
 
 // fetchWhatsNew().catch((err) => console.error(err));
