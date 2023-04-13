@@ -166,23 +166,22 @@ const getNewTechCommunityPosts = async () => {
   }
 };
 
-// Poll the database every 10 minutes
+// Poll the database every 15 minutes
 const interval = setInterval(async () => {
   await tweetNewRows();
   await tweetNewCommits();
-}, 60 * 60 * 1000);
+}, 15 * 60 * 1000);
 
 // call the fetchBlogPosts function every 5 minutes
 setInterval(async () => {
-  //await fetchBlogPosts();
+  await fetchBlogPosts();
   await fetchWhatsNew();
 
   for (const channel of youtubefeeds) {
     await getNewVideos(channel.channelId, channel.channelName);
   }
-  await tweetNewCommits();
-  await getNewTechCommunityPosts();
-}, 1 * 60 * 1000);
+  //await getNewTechCommunityPosts();
+}, 5 * 60 * 1000);
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
