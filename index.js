@@ -12,6 +12,16 @@ const prisma = new PrismaClient({
   },
 });
 
+const { google } = require("googleapis");
+
+const youtubeApiKey = process.env.YouTube_API_KEY;
+
+// YouTube Data API client
+const youtube = google.youtube({
+  version: "v3",
+  auth: youtubeApiKey,
+});
+
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
@@ -19,6 +29,8 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 const { twitterClient } = require("./twitterClient.js");
+
+const youtubefeeds = require("./youtubefeeds.json");
 
 const { fetchBlogPosts } = require("./scrape.js"); // import the function
 
@@ -149,7 +161,11 @@ const interval = setInterval(tweetNewRows, 60 * 60 * 1000);
 // call the fetchBlogPosts function every 5 minutes
 setInterval(async () => {
   await fetchBlogPosts();
-  await getNewVideos(channelId, channelName);
+
+  for (const channel of youtubefeeds) {
+    await getNewVideos(channel.channelId, channel.channelName);
+  }
+
   await getNewTechCommunityPosts();
   await getWhatsNew();
 }, 5 * 60 * 1000);
