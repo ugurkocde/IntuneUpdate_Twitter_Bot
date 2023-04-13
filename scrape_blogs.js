@@ -59,7 +59,7 @@ async function fetchBlogPosts() {
         await browser.close();
       }
 
-      console.log(`Extracted title: ${title}`);
+      console.log(`New Blog! -> ${title}`);
 
       // Set the author to the value in the feeds.json file, or to an empty string if not specified
       author = feed.author || "";

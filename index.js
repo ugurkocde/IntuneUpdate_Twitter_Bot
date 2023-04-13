@@ -44,7 +44,7 @@ const tweetNewRows = async () => {
       },
     });
     data.forEach(async (row) => {
-      const { title, content, author } = row;
+      const { title, content, author, url } = row;
       try {
         const prompt = `Your answer can only be 20 words long. Summarize the following text. Dont use the title to summarize the article. Focus on the content. Your summary should be different from the Title. Dont add any tags or hashwords with # and dont tell people were to download or get a script. Dont use the title and header of the text in your response. Be precise as possible without exceeding 20 words in your response. \n\n${content}.`;
         const aiResponse = await openai.createChatCompletion({
@@ -57,7 +57,7 @@ const tweetNewRows = async () => {
           truncatedTitle = title.slice(0, 40) + "...";
         }
         const summary = aiResponse.data.choices[0].message.content;
-        const tweetText = `${truncatedTitle}:\n\n${summary}\n\n${author}`;
+        const tweetText = `${truncatedTitle}\n\n${summary}\n\n${url} ${author}`;
         await twitterClient.v2.tweet(tweetText);
         console.log(`Tweeted: ${tweetText}`);
         await prisma.BlogPost.update({
@@ -87,7 +87,7 @@ const tweetNewCommits = async () => {
     data.forEach(async (row) => {
       const { title, author, url } = row;
       try {
-        const tweetText = `Detected changes in the Whats New docs:\n\n${title} by ${author}\n\n${url}`;
+        const tweetText = `Detected changes in the "What's new in Microsoft Intune" docs:\n\n${title}\n\n${url}`;
         await twitterClient.v2.tweet(tweetText);
         console.log(`Tweeted: ${tweetText}`);
         await prisma.WhatsNew.update({
@@ -166,13 +166,13 @@ const getNewTechCommunityPosts = async () => {
   }
 };
 
-// Poll the database every 15 minutes
+// TWEET RESULUTS EVERY 15 MINUTES
 const interval = setInterval(async () => {
   await tweetNewRows();
   await tweetNewCommits();
 }, 15 * 60 * 1000);
 
-// call the fetchBlogPosts function every 5 minutes
+// GET DATA EVERY 5 MINUTES
 setInterval(async () => {
   await fetchBlogPosts();
   await fetchWhatsNew();
