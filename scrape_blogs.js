@@ -19,7 +19,7 @@ async function fetchBlogPosts() {
 
   // Loop through each feed and fetch its blog posts
   for (const feed of feeds) {
-    console.log(`Fetching RSS feed at ${feed.url}...`);
+    // console.log(`Fetching RSS feed at ${feed.url}...`);
 
     let parsedFeed;
     try {
