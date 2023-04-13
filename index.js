@@ -13,6 +13,7 @@ const prisma = new PrismaClient({
 });
 const puppeteer = require("puppeteer");
 const axios = require("axios");
+const cheerio = require("cheerio");
 
 const { google } = require("googleapis");
 
@@ -109,7 +110,7 @@ const getNewVideos = async (channelId, channelName) => {
 // Get new posts from the Tech Community page
 const getNewTechCommunityPosts = async () => {
   try {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
     const page = await browser.newPage();
     await page.goto(
       "https://techcommunity.microsoft.com/t5/intune-customer-success/bg-p/IntuneCustomerSuccess"
