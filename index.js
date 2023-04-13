@@ -120,17 +120,38 @@ const getNewTechCommunityPosts = async () => {
   }
 };
 
-// const interval = setInterval(tweetNewRows, 60 * 60 * 1000); // Poll the database every 10 minutes
+const getWhatsNew = async () => {
+  try {
+    const response = await axios.get(
+      "https://github.com/MicrosoftDocs/memdocs/commits/main/memdocs/intune/fundamentals/whats-new.md"
+    );
+    const html = response.data;
+    const $ = cheerio.load(html);
+    const latestCommitLink = $("a.sha").first().attr("href");
+    const latestCommitMessage = $("a.message").first().text().trim();
+    const latestCommitDate = new Date(
+      $("relative-time").first().attr("datetime")
+    );
+    if (latestCommitDate > lastCheckedDate) {
+      const tweetText = `New commit to Microsoft Intune What's New documentation: ${latestCommitMessage}\n\n${latestCommitLink}\n\n#Intune #Microsoft #GitHub`;
+      await twitterClient.v2.tweet(tweetText);
+      lastCheckedDate = latestCommitDate;
+      console.log(`Checked the What's New page successfully`);
+    }
+  } catch (error) {
+    console.error(`Error while parsing the What's New page: ${error.message}`);
+  }
+};
 
-const interval = setInterval(() => {
-  tweetNewRows();
-  getNewVideos(channel.channelId, channel.channelName);
-  getNewTechCommunityPosts();
-}, 60 * 60 * 1000); // Poll every hour
+// Poll the database every 10 minutes
+const interval = setInterval(tweetNewRows, 60 * 60 * 1000);
 
 // call the fetchBlogPosts function every 5 minutes
 setInterval(async () => {
   await fetchBlogPosts();
+  await getNewVideos(channelId, channelName);
+  await getNewTechCommunityPosts();
+  await getWhatsNew();
 }, 5 * 60 * 1000);
 
 app.listen(port, () => {
