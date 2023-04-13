@@ -11,6 +11,8 @@ const prisma = new PrismaClient({
     },
   },
 });
+const puppeteer = require("puppeteer");
+const axios = require("axios");
 
 const { google } = require("googleapis");
 
@@ -74,6 +76,8 @@ const tweetNewRows = async () => {
     console.log(e);
   }
 };
+
+let lastCheckedDate = null;
 
 const getNewVideos = async (channelId, channelName) => {
   try {
