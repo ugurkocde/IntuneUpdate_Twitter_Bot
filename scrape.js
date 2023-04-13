@@ -52,7 +52,7 @@ async function fetchBlogPosts() {
           `Content not found. Using Puppeteer to extract content for ${item.link}...`
         );
 
-        const browser = await puppeteer.launch();
+        const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
         const page = await browser.newPage();
         await page.goto(item.link, { waitUntil: "networkidle2" });
         content = await page.$eval("*", (el) => el.innerText);
