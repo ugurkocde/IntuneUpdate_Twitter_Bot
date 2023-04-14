@@ -136,21 +136,24 @@ const getNewVideos = async (channelId, channelName) => {
   }
 };
 
-// TWEET RESULUTS EVERY 15 MINUTES
-const interval = setInterval(async () => {
-  await tweetNewRows();
-  await tweetNewCommits();
-}, 30 * 60 * 1000);
+// GET YOUTUBE DATA EVERY 3 HOURS
+setInterval(async () => {
+  for (const channel of youtubefeeds) {
+    await getNewVideos(channel.channelId, channel.channelName);
+  }
+}, 180 * 60 * 1000);
 
 // GET DATA EVERY 5 MINUTES
 setInterval(async () => {
   await fetchBlogPosts();
   await fetchWhatsNew();
-
-  for (const channel of youtubefeeds) {
-    await getNewVideos(channel.channelId, channel.channelName);
-  }
 }, 15 * 60 * 1000);
+
+// TWEET RESULUTS EVERY 15 MINUTES
+const interval = setInterval(async () => {
+  await tweetNewRows();
+  await tweetNewCommits();
+}, 30 * 60 * 1000);
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
