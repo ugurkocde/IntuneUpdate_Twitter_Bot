@@ -147,7 +147,7 @@ setInterval(async () => {
 setInterval(async () => {
   await fetchBlogPosts();
   await fetchWhatsNew();
-}, 1 * 60 * 1000);
+}, 5 * 60 * 1000);
 
 // TWEET RESULUTS EVERY 30 MINUTES
 const interval = setInterval(async () => {
