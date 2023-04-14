@@ -1,7 +1,14 @@
 [
-    {
-      "channelId": "UCfmMlhX5TW8cicxHw6ExYVA",
-      "channelName": "IntuneTraining"
-    }
-  ]
-  
+  {
+    "channelId": "UCfmMlhX5TW8cicxHw6ExYVA",
+    "channelName": "IntuneTraining"
+  },
+  {
+    "channelId": "UCTveKU9IdMSTGf7eK6660eg",
+    "channelName": "Windows Community"
+  },
+  {
+    "channelId": "UC0RV7jDzmpNAKQZGgEcfavQ",
+    "channelName": "Anoop C Nair"
+  }
+]

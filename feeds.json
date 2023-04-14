@@ -64,7 +64,7 @@
     "author": "@ugurkocde"
   },
   {
-    "url": "https://call4cloud.nl/rss/",
+    "url": "https://www.call4cloud.nl/rss/",
     "author": "@ugurkocde"
   },
   {
@@ -77,6 +77,14 @@
   },
   {
     "url": "https://shehanperera.com/rss/",
+    "author": "@ugurkocde"
+  },
+  {
+    "url": "https://joostgelijsteen.com/feed/",
+    "author": "@ugurkocde"
+  },
+  {
+    "url": "https://www.nielskok.tech/feed/",
     "author": "@ugurkocde"
   }
 ]
