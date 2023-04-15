@@ -137,11 +137,11 @@ const getNewVideos = async (channelId, channelName) => {
 };
 
 // GET YOUTUBE DATA EVERY 3 HOURS
-setInterval(async () => {
+/* setInterval(async () => {
   for (const channel of youtubefeeds) {
     await getNewVideos(channel.channelId, channel.channelName);
   }
-}, 180 * 60 * 1000);
+}, 180 * 60 * 1000); */
 
 // GET DATA EVERY 5 MINUTES
 setInterval(async () => {
