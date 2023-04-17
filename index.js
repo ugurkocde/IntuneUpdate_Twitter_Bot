@@ -138,7 +138,7 @@ setInterval(async () => {
 }, 15 * 60 * 1000);
 
 // TWEET RESULUTS EVERY 30 MINUTES
-const interval = setInterval(async () => {
+setInterval(async () => {
   await tweetNewRows();
   await tweetNewCommits();
   await tweetYoutubeVideo();
