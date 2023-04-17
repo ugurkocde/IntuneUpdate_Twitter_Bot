@@ -14,15 +14,7 @@ const prisma = new PrismaClient({
 const puppeteer = require("puppeteer");
 
 const { fetchWhatsNew } = require("./scrape_whatsnew.js"); // import the function
-const { google } = require("googleapis");
-
-const youtubeApiKey = process.env.YouTube_API_KEY;
-
-// YouTube Data API client
-const youtube = google.youtube({
-  version: "v3",
-  auth: youtubeApiKey,
-});
+const { getNewVideos } = require("./scrape_youtube.js");
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -31,9 +23,6 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 const { twitterClient } = require("./twitterClient.js");
-
-const youtubefeeds = require("./youtubefeeds.json");
-
 const { fetchBlogPosts } = require("./scrape_blogs.js"); // import the function
 
 const tweetNewRows = async () => {
@@ -107,43 +96,42 @@ const tweetNewCommits = async () => {
   }
 };
 
-let lastCheckedDate = null;
-
-const getNewVideos = async (channelId, channelName) => {
+const tweetYoutubeVideo = async () => {
   try {
-    const response = await youtube.search.list({
-      part: "snippet",
-      channelId: channelId,
-      order: "date",
-      type: "video",
-      maxResults: 5,
+    const data = await prisma.YoutubeVideos.findMany({
+      where: {
+        tweeted: false,
+      },
     });
-    const latestVideoDate = new Date(
-      response.data.items[0].snippet.publishedAt
-    );
-    if (latestVideoDate > lastCheckedDate) {
-      const latestVideoTitle = response.data.items[0].snippet.title;
-      const latestVideoLink = `https://www.youtube.com/watch?v=${response.data.items[0].id.videoId}`;
-      const tweetText = `New video on the ${channelName} YouTube channel: ${latestVideoTitle}\n\n${latestVideoLink}\n\n#Intune #Microsoft #YouTube`;
-      await twitterClient.v2.tweet(tweetText);
-      lastCheckedDate = latestVideoDate;
-      console.log(`Checked ${channelName} successfully`);
-    }
-  } catch (error) {
-    console.error(
-      `Error while getting new videos for ${channelName}: ${error.message}`
-    );
+    data.forEach(async (row) => {
+      const { title, url, author } = row;
+      try {
+        const tweetText = `New Video from ${author}:\n\n${title}\n\n#Intune #Microsoft\n\n${url}`;
+        await twitterClient.v2.tweet(tweetText);
+        console.log(`Tweeted: ${tweetText}`);
+        await prisma.YoutubeVideos.update({
+          where: {
+            id: row.id,
+          },
+          data: {
+            tweeted: true,
+          },
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    });
+  } catch (e) {
+    console.log(e);
   }
 };
 
 // GET YOUTUBE DATA EVERY 3 HOURS
-/* setInterval(async () => {
-  for (const channel of youtubefeeds) {
-    await getNewVideos(channel.channelId, channel.channelName);
-  }
-}, 180 * 60 * 1000); */
+setInterval(async () => {
+  await getNewVideos();
+}, 1 * 60 * 1000);
 
-// GET DATA EVERY 5 MINUTES
+// GET DATA EVERY 15 MINUTES
 setInterval(async () => {
   await fetchBlogPosts();
   await fetchWhatsNew();
@@ -153,6 +141,7 @@ setInterval(async () => {
 const interval = setInterval(async () => {
   await tweetNewRows();
   await tweetNewCommits();
+  await tweetYoutubeVideo();
 }, 30 * 60 * 1000);
 
 app.listen(port, () => {
