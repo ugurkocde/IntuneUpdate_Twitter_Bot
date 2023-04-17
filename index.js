@@ -14,7 +14,7 @@ const prisma = new PrismaClient({
 const puppeteer = require("puppeteer");
 
 const { fetchWhatsNew } = require("./scrape_whatsnew.js"); // import the function
-const { getNewVideos } = require("./scrape_youtube.js");
+const { fetchYouTubeVideos } = require("./scrape_youtube.js");
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -126,16 +126,16 @@ const tweetYoutubeVideo = async () => {
   }
 };
 
-// GET YOUTUBE DATA EVERY 3 HOURS
+// GET YOUTUBE DATA EVERY 4 HOURS
 setInterval(async () => {
-  await getNewVideos();
-}, 1 * 60 * 1000);
+  await fetchYouTubeVideos();
+}, 240 * 60 * 1000);
 
 // GET DATA EVERY 15 MINUTES
 setInterval(async () => {
   await fetchBlogPosts();
   await fetchWhatsNew();
-}, 5 * 60 * 1000);
+}, 15 * 60 * 1000);
 
 // TWEET RESULUTS EVERY 30 MINUTES
 const interval = setInterval(async () => {
