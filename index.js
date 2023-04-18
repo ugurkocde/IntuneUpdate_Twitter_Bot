@@ -106,7 +106,7 @@ const tweetYoutubeVideo = async () => {
     data.forEach(async (row) => {
       const { title, url, author } = row;
       try {
-        const tweetText = `New Video from ${author}:\n\n${title}\n\n#Intune #Microsoft\n\n${url}`;
+        const tweetText = `${title}\n\n${url} ${author}\n\n#Intune #Microsoft`;
         await twitterClient.v2.tweet(tweetText);
         console.log(`Tweeted: ${tweetText}`);
         await prisma.YoutubeVideos.update({
