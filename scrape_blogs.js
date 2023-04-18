@@ -48,6 +48,10 @@ async function fetchBlogPosts() {
       title = $("title").text().trim();
       content = $("content").text().trim();
 
+      if (content.length > 15000) {
+        content = content.slice(0, 15000);
+      }
+
       // If the content is empty, use Puppeteer to load the URL and extract the content
       if (!content) {
         // console.log(`Content not found. Using Puppeteer to extract content for ${item.link}...`);
@@ -56,6 +60,9 @@ async function fetchBlogPosts() {
         const page = await browser.newPage();
         await page.goto(item.link, { waitUntil: "networkidle2" });
         content = await page.$eval("*", (el) => el.innerText);
+        if (content.length > 15000) {
+          content = content.slice(0, 15000);
+        }
         await browser.close();
       }
 

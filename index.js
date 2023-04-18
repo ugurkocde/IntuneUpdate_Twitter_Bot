@@ -35,7 +35,7 @@ const tweetNewRows = async () => {
     data.forEach(async (row) => {
       const { title, content, author, url } = row;
       try {
-        const prompt = `Your answer can only be 18 words long. Summarize the following text. Dont use the title to summarize the article. Focus on the content. Your summary should be different from the Title. Dont add any tags or hashwords with # and dont tell people were to download or get a script. Dont use the title and header of the text in your response. Be precise as possible without exceeding 20 words in your response. \n\n${content}.`;
+        const prompt = `Your answer can only be 18 words long. Summarize the following text. Dont use the title to summarize the article. Focus on the content. Your summary should be different from the Title. Dont add any tags or hashwords with # and dont tell people were to download or get a script. Dont use the title and header of the text in your response. Be precise as possible without exceeding 18 words in your response. \n\n${content}.`;
         const aiResponse = await openai.createChatCompletion({
           model: "gpt-3.5-turbo",
           messages: [{ role: "user", content: `${prompt}` }],
