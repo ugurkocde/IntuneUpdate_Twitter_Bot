@@ -34,7 +34,7 @@ async function fetchIntuneDocs() {
           .textContent.trim(),
       }))
   );
-  console.log(`Found ${commitList.length} commits`);
+  // console.log(`Found ${commitList.length} commits`);
 
   const existingUrls = await prisma.IntuneDocs.findMany({
     select: { url: true },
@@ -45,7 +45,7 @@ async function fetchIntuneDocs() {
     return !isDuplicate && !isBot;
   });
 
-  console.log(`Found ${newCommits.length} new commits`);
+  // console.log(`Found ${newCommits.length} new commits`);
 
   for (const commit of newCommits) {
     try {
