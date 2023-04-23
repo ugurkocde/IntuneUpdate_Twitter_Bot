@@ -13,8 +13,8 @@ const prisma = new PrismaClient({
 });
 const puppeteer = require("puppeteer");
 
-const { fetchWhatsNew } = require("./scrape_whatsnew.js"); // import the function
 const { fetchYouTubeVideos } = require("./scrape_youtube.js");
+const { fetchIntuneDocs } = require("./scrape_intunedocs.js");
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -46,7 +46,7 @@ const tweetNewRows = async () => {
           truncatedTitle = title.slice(0, 40) + "...";
         }
         const summary = aiResponse.data.choices[0].message.content;
-        const tweetText = `${truncatedTitle}\n\n${summary}\n\n${url} ${author}\n\n#Intune #Microsoft`;
+        const tweetText = `[New Blog Post] ${truncatedTitle}\n\n${summary}\n\n${url} ${author}\n\n#Intune #Microsoft`;
         await twitterClient.v2.tweet(tweetText);
         console.log(`Tweeted: ${tweetText}`);
         await prisma.BlogPost.update({
@@ -68,18 +68,18 @@ const tweetNewRows = async () => {
 
 const tweetNewCommits = async () => {
   try {
-    const data = await prisma.WhatsNew.findMany({
+    const data = await prisma.IntuneDocs.findMany({
       where: {
         tweeted: false,
       },
     });
     data.forEach(async (row) => {
-      const { title, url } = row;
+      const { summary, url } = row;
       try {
-        const tweetText = `Detected changes in the "What's new in Microsoft Intune" docs:\n\n${title}\n\n#Intune #Microsoft\n\n${url}`;
+        const tweetText = `Detected changes in the Intune Documentation: \n\n${summary}\n\n#Intune #Microsoft\n\n${url}`;
         await twitterClient.v2.tweet(tweetText);
         console.log(`Tweeted: ${tweetText}`);
-        await prisma.WhatsNew.update({
+        await prisma.IntuneDocs.update({
           where: {
             id: row.id,
           },
@@ -106,7 +106,7 @@ const tweetYoutubeVideo = async () => {
     data.forEach(async (row) => {
       const { title, url, author } = row;
       try {
-        const tweetText = `${title}\n\n${url} ${author}\n\n#Intune #Microsoft`;
+        const tweetText = `[New Video] ${title}\n\n${url} ${author}\n\n#Intune #Microsoft`;
         await twitterClient.v2.tweet(tweetText);
         console.log(`Tweeted: ${tweetText}`);
         await prisma.YoutubeVideos.update({
@@ -126,18 +126,18 @@ const tweetYoutubeVideo = async () => {
   }
 };
 
-// GET YOUTUBE DATA EVERY 4 HOURS
+// GET YOUTUBE DATA EVERY 5 HOURS
 setInterval(async () => {
   await fetchYouTubeVideos();
-}, 240 * 60 * 1000);
+}, 300 * 60 * 1000);
 
 // GET DATA EVERY 15 MINUTES
 setInterval(async () => {
   await fetchBlogPosts();
-  await fetchWhatsNew();
+  await fetchIntuneDocs();
 }, 15 * 60 * 1000);
 
-// TWEET RESULUTS EVERY 30 MINUTES
+// TWEET RESULTS EVERY 30 MINUTES
 setInterval(async () => {
   await tweetNewRows();
   await tweetNewCommits();
@@ -145,5 +145,5 @@ setInterval(async () => {
 }, 30 * 60 * 1000);
 
 app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
+  console.log(`Server started on port ${port}`);
 });
