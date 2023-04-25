@@ -3,8 +3,15 @@ const cheerio = require("cheerio");
 const Parser = require("rss-parser");
 const puppeteer = require("puppeteer");
 const { PrismaClient } = require("@prisma/client");
+const { Configuration, OpenAIApi } = require("openai");
 
 const prisma = new PrismaClient();
+
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
+const openai = new OpenAIApi(configuration);
 
 async function fetchBlogPosts() {
   // Read the feed URLs and author names from feeds.json
@@ -41,7 +48,7 @@ async function fetchBlogPosts() {
         continue;
       }
 
-      let title, content, author;
+      let title, content, twitterauthor;
       const response = await axios.get(item.link);
       const $ = cheerio.load(response.data);
 
@@ -66,13 +73,29 @@ async function fetchBlogPosts() {
         await browser.close();
       }
 
+      const prompt = `Summarize the following text. Dont use the title to summarize the article. Focus on the content. Your summary should be different from the Title. Dont add any tags or hashwords with # and dont tell people were to download or get a script. Dont use the title and header of the text in your response. Be precise as possible without exceeding 18 words in your response. \n\n${content}.`;
+      const aiResponse = await openai.createChatCompletion({
+        model: "gpt-3.5-turbo",
+        messages: [{ role: "user", content: `${prompt}` }],
+        temperature: 0.2,
+      });
+      const summary = aiResponse.data.choices[0].message.content;
+
       console.log(`New Blog! -> ${title}`);
 
       // Set the author to the value in the feeds.json file, or to an empty string if not specified
+      twitterauthor = feed.twitterauthor || "";
       author = feed.author || "";
 
       await prisma.blogPost.create({
-        data: { title, content, url: item.link, author },
+        data: {
+          title,
+          content,
+          url: item.link,
+          author,
+          summary,
+          twitterauthor,
+        },
       });
 
       addedCount++; // Increment the counter
@@ -84,6 +107,6 @@ async function fetchBlogPosts() {
   await prisma.$disconnect();
 }
 
-// fetchBlogPosts().catch((err) => console.error(err));
+fetchBlogPosts().catch((err) => console.error(err));
 
 module.exports = { fetchBlogPosts };

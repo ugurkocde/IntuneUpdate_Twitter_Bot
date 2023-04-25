@@ -1,98 +1,122 @@
 [
   {
     "url": "https://ugurkoc.de/rss",
-    "author": "@ugurkocde"
+    "twitterauthor": "@ugurkocde",
+    "author": "Ugur Koc"
   },
   {
     "url": "https://oceanleaf.ch/rss/",
-    "author": "@ugurkocde"
+    "twitterauthor": "@ugurkocde",
+    "author": "Niklas Tinner"
   },
   {
     "url": "https://petervanderwoude.nl/rss/",
-    "author": "@ugurkocde"
+    "twitterauthor": "@ugurkocde",
+    "author": "Peter van der Woude"
   },
   {
     "url": "https://365bythijs.be/rss/",
-    "author": "@ugurkocde"
+    "twitterauthor": "@ugurkocde",
+    "author": "Thijs van der Velden"
   },
   {
     "url": "https://andrewstaylor.com/rss",
-    "author": "@ugurkocde"
+    "twitterauthor": "@ugurkocde",
+    "author": "Andrew Staylor"
   },
   {
     "url": "https://ccmexec.com/rss/",
-    "author": "@ugurkocde"
+    "twitterauthor": "@ugurkocde",
+    "author": "Jörgen Nilsson"
   },
   {
     "url": "https://www.anoopcnair.com/rss",
-    "author": "@ugurkocde"
+    "twitterauthor": "@ugurkocde",
+    "author": "Anoop C Nair"
   },
   {
     "url": "https://oofhours.com/rss",
-    "author": "@ugurkocde"
+    "twitterauthor": "@ugurkocde",
+    "author": "Michael Niehaus"
   },
   {
     "url": "https://jannikreinhard.com/rss",
-    "author": "@ugurkocde"
+    "twitterauthor": "@ugurkocde",
+    "author": "Jannik Reinhard"
   },
   {
     "url": "https://www.msendpointmgr.com/rss",
-    "author": "@ugurkocde"
+    "twitterauthor": "@ugurkocde",
+    "author": "MS Endpoint Manager"
   },
   {
     "url": "https://www.inthecloud247.com/rss/",
-    "author": "@ugurkocde"
+    "twitterauthor": "@ugurkocde",
+    "author": "Peter Klapwijk"
   },
   {
     "url": "https://www.thelazyadministrator.com/rss/",
-    "author": "@ugurkocde"
+    "twitterauthor": "@ugurkocde",
+    "author": "Bradley Wyatt"
   },
   {
     "url": "https://endpointcave.com/rss/",
-    "author": "@ugurkocde"
+    "twitterauthor": "@ugurkocde",
+    "author": "René Laas"
   },
   {
     "url": "https://skotheimsvik.no/rss",
-    "author": "@ugurkocde"
+    "twitterauthor": "@ugurkocde",
+    "author": "Simon Skotheimsvik"
   },
   {
     "url": "https://oliverkieselbach.com/rss/",
-    "author": "@ugurkocde"
+    "twitterauthor": "@ugurkocde",
+    "author": "Oliver Kieselbach"
   },
   {
     "url": "https://intuneirl.com/rss/",
-    "author": "@ugurkocde"
+    "twitterauthor": "@ugurkocde",
+    "author": "Somesh Pathak"
   },
   {
     "url": "https://www.call4cloud.nl/rss/",
-    "author": "@ugurkocde"
+    "twitterauthor": "@ugurkocde",
+    "author": "Rudy Ooms"
   },
   {
     "url": "https://smbtothecloud.com/rss/",
-    "author": "@ugurkocde"
+    "twitterauthor": "@ugurkocde",
+    "author": "Gannon Novak"
   },
   {
     "url": "https://thiagobeier.wordpress.com/rss",
-    "author": "@ugurkocde"
+    "twitterauthor": "@ugurkocde",
+    "author": "Thiago Beier"
   },
   {
     "url": "https://shehanperera.com/rss/",
-    "author": "@ugurkocde"
+    "twitterauthor": "@ugurkocde",
+    "author": "Shehan Perera"
   },
   {
     "url": "https://joostgelijsteen.com/feed/",
-    "author": "@ugurkocde"
+    "twitterauthor": "@ugurkocde",
+    "author": "Joost Gelijsteen"
   },
   {
     "url": "https://www.nielskok.tech/feed/",
-    "author": "@ugurkocde"
+    "twitterauthor": "@ugurkocde",
+    "author": "Niels Kok"
   },
   {
     "url": "https://mikemdm.de/feed/",
-    "author": "@ugurkocde"
+    "twitterauthor": "@ugurkocde",
+    "author": "Michael Meier"
   },
   {
     "url": "https://cloudfil.ch/blog/feed/",
-    "author": "@ugurkocde"
+    "twitterauthor": "@ugurkocde",
+    "author": "Nico Wyss"
   }
 ]
