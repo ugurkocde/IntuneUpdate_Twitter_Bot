@@ -11,17 +11,28 @@ datasource db {
 }
 
 model BlogPost {
-  id        Int      @id @default(autoincrement())
-  url       String   @unique
-  author    String
-  title     String
-  content   String
-  summary   String
+  id          Int        @id @default(autoincrement())
+  url         String     @unique
+  author      String
+  title       String
+  content     String
+  summary     String
   twitterauthor String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  tweeted   Boolean  @default(false)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  tweeted     Boolean    @default(false)
+  bookmarks   Bookmark[] @relation("bookmarks") // Add relation name here
 }
+
+model Bookmark {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  blogId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  blogPost  BlogPost @relation("bookmarks", fields: [blogId], references: [id]) // Keep the relation name as "bookmarks"
+}
+
 
 model WhatsNew {
   id         Int          @id @default(autoincrement())
