@@ -61,8 +61,6 @@ async function fetchBlogPosts() {
 
       // If the content is empty, use Puppeteer to load the URL and extract the content
       if (!content) {
-        // console.log(`Content not found. Using Puppeteer to extract content for ${item.link}...`);
-
         const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
         const page = await browser.newPage();
         await page.goto(item.link, { waitUntil: "networkidle2" });
@@ -73,6 +71,7 @@ async function fetchBlogPosts() {
         await browser.close();
       }
 
+      // Summarize the content only for newly added blog posts
       const prompt = `Summarize the following text. Don´t use the title to summarize the article. Focus on the content. Your summary should be different from the Title. Dont add any tags or hashwords with # and dont tell people were to download or get a script. Dont use the title and header of the text in your response. Be precise as possible without exceeding 18 words in your response. \n\n${content}.`;
       const aiResponse = await openai.createChatCompletion({
         model: "gpt-3.5-turbo",
