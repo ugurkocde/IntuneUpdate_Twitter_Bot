@@ -21,7 +21,8 @@ model BlogPost {
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
   tweeted     Boolean    @default(false)
-  bookmarks   Bookmark[] @relation("bookmarks") // Add relation name here
+  bookmarks   Bookmark[] @relation("bookmarks")
+  likes       Like[]     @relation("likes")
 }
 
 model Bookmark {
@@ -30,8 +31,19 @@ model Bookmark {
   blogId    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
-  blogPost  BlogPost @relation("bookmarks", fields: [blogId], references: [id]) // Keep the relation name as "bookmarks"
+  blogPost  BlogPost @relation("bookmarks", fields: [blogId], references: [id])
 }
+
+model Like {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  blogId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  blogPost  BlogPost @relation("likes", fields: [blogId], references: [id])
+}
+
+
 
 
 model WhatsNew {
