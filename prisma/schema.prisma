@@ -57,14 +57,38 @@ model WhatsNew {
 }
 
 model YoutubeVideos {
-  id        Int      @id @default(autoincrement())
-  url       String   @unique
-  author    String
-  title     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  tweeted   Boolean  @default(false)
+  id             Int            @id @default(autoincrement())
+  url            String         @unique
+  author         String
+  title          String
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  tweeted        Boolean        @default(false)
+  videoLikes     VideoLike[]    @relation("videolikes")
+  videoBookmarks VideoBookmark[] @relation("videobookmarks")
 }
+
+
+
+model VideoLike {
+  id            Int           @id @default(autoincrement())
+  userId        String
+  videoId       Int
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @default(now()) @updatedAt
+  youtubeVideo  YoutubeVideos @relation("videolikes", fields: [videoId], references: [id])
+}
+
+model VideoBookmark {
+  id           Int           @id @default(autoincrement())
+  userId       String
+  videoId      Int
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @default(now()) @updatedAt
+  youtubeVideo YoutubeVideos @relation("videobookmarks", fields: [videoId], references: [id])
+}
+
+
 
 model IntuneDocs {
   id        Int      @id @default(autoincrement())
