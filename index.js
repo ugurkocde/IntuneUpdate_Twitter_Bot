@@ -126,16 +126,16 @@ const tweetYoutubeVideo = async () => {
   }
 };
 
-// GET YOUTUBE DATA EVERY 5 HOURS
+// GET YOUTUBE DATA EVERY 8 HOURS
 setInterval(async () => {
   await fetchYouTubeVideos();
-}, 300 * 60 * 1000);
+}, 480 * 60 * 1000);
 
-// GET DATA EVERY 15 MINUTES
+// GET DATA EVERY 3 HOURS
 setInterval(async () => {
   await fetchBlogPosts();
   await fetchIntuneDocs();
-}, 15 * 60 * 1000);
+}, 180 * 60 * 1000);
 
 // TWEET RESULTS EVERY 30 MINUTES
 setInterval(async () => {
