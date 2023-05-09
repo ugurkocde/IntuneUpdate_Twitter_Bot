@@ -135,7 +135,7 @@ setInterval(async () => {
 setInterval(async () => {
   await fetchBlogPosts();
   await fetchIntuneDocs();
-}, 180 * 60 * 1000);
+}, 181 * 60 * 1000);
 
 // TWEET RESULTS EVERY 30 MINUTES
 setInterval(async () => {
