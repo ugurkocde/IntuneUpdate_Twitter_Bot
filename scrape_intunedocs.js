@@ -100,6 +100,6 @@ async function fetchIntuneDocs() {
   await browser.close();
 }
 
-fetchIntuneDocs().catch((err) => console.error(err));
+// fetchIntuneDocs().catch((err) => console.error(err));
 
 module.exports = { fetchIntuneDocs };

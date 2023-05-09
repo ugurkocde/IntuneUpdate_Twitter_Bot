@@ -60,6 +60,6 @@ async function fetchYouTubeVideos() {
   }
 }
 
-fetchYouTubeVideos().catch((err) => console.error(err));
+// fetchYouTubeVideos().catch((err) => console.error(err));
 
 module.exports = { fetchYouTubeVideos };
