@@ -19,7 +19,9 @@ async function fetchYouTubeVideos() {
         type: "video",
         maxResults: 1,
       });
-      // console.log(`Fetched ${items.length} videos from ${channelName} (${channelId})`);
+      console.log(
+        `Fetched ${items.length} videos from ${channelName} (${channelId})`
+      );
 
       // Filter out videos that have already been added to the database
       const existingUrls = await prisma.YoutubeVideos.findMany({
@@ -32,7 +34,7 @@ async function fetchYouTubeVideos() {
               url.url === `https://www.youtube.com/watch?v=${video.id.videoId}`
           )
       );
-      // console.log(`Found ${newVideos.length} new videos`);
+      console.log(`Found ${newVideos.length} new videos`);
 
       // Save new videos to the database
       for (const video of newVideos) {
@@ -49,7 +51,7 @@ async function fetchYouTubeVideos() {
               tweeted,
             },
           });
-          // console.log(`Added new video to database: ${title}`);
+          console.log(`Added new video to database: ${title}`);
         } catch (error) {
           console.error(`Error adding video to database: ${error.message}`);
         }
@@ -60,6 +62,6 @@ async function fetchYouTubeVideos() {
   }
 }
 
-// fetchYouTubeVideos().catch((err) => console.error(err));
+fetchYouTubeVideos().catch((err) => console.error(err));
 
-module.exports = { fetchYouTubeVideos };
+//module.exports = { fetchYouTubeVideos };

@@ -15,6 +15,9 @@ const puppeteer = require("puppeteer");
 
 const { fetchYouTubeVideos } = require("./scrape_youtube.js");
 const { fetchIntuneDocs } = require("./scrape_intunedocs.js");
+const { fetchMSBlogPosts } = require("./scrape_msblogs.js");
+const { fetchWindowsBlogPosts } = require("./scrape_windowsblogs.js");
+const { fetchIntuneMSBlogPosts } = require("./scrape_intunemsblogs.js");
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -134,7 +137,10 @@ setInterval(async () => {
 // GET DATA EVERY 3 HOURS
 setInterval(async () => {
   await fetchBlogPosts();
-  await fetchIntuneDocs();
+  //await fetchIntuneDocs();
+  await fetchMSBlogPosts();
+  await fetchWindowsBlogPosts();
+  await fetchIntuneMSBlogPosts();
 }, 181 * 60 * 1000);
 
 // TWEET RESULTS EVERY 30 MINUTES

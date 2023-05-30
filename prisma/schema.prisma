@@ -18,29 +18,80 @@ model BlogPost {
   content     String
   summary     String
   twitterauthor String
-  createdAt   DateTime   @default(now())
+  createdAt   DateTime   
   updatedAt   DateTime   @updatedAt
   tweeted     Boolean    @default(false)
   bookmarks   Bookmark[] @relation("bookmarks")
   likes       Like[]     @relation("likes")
 }
 
+model MSBlogPost {
+  id          Int        @id @default(autoincrement())
+  url         String     @unique
+  pictureUrl  String
+  title       String
+  date        String
+  author      String     @default("Microsoft")
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  bookmarks   Bookmark[] @relation("MSBlogPostBookmarks")
+  likes       Like[]     @relation("MSBlogPostLikes")
+}
+
+model WindowsBlogPost {
+  id          Int        @id @default(autoincrement())
+  url         String     @unique
+  pictureUrl  String
+  title       String
+  date        String
+  author      String     @default("Microsoft")
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  bookmarks   Bookmark[] @relation("WindowsBlogPostBookmarks")
+  likes       Like[]     @relation("WindowsBlogPostLikes")
+}
+
+model IntuneMSBlogPost {
+  id          Int        @id @default(autoincrement())
+  url         String     @unique
+  pictureUrl  String
+  title       String
+  date        String
+  author      String     @default("Microsoft")
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  bookmarks   Bookmark[] @relation("IntuneMSBlogPostBookmarks")
+  likes       Like[]     @relation("IntuneMSBlogPostLikes")
+}
+
 model Bookmark {
-  id        Int      @id @default(autoincrement())
-  userId    String
-  blogId    Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-  blogPost  BlogPost @relation("bookmarks", fields: [blogId], references: [id])
+  id          Int        @id @default(autoincrement())
+  userId      String
+  blogId      Int
+  msBlogId    Int?       // This is nullable because a bookmark can be related to either a BlogPost or a MSBlogPost
+  windowsBlogId    Int?       // This is nullable because a bookmark can be related to either a BlogPost or a MSBlogPost
+  intunemsBlogId    Int?       // This is nullable because a bookmark can be related to either a BlogPost or a MSBlogPost
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  blogPost    BlogPost?  @relation("bookmarks", fields: [blogId], references: [id])
+  msBlogPost  MSBlogPost? @relation("MSBlogPostBookmarks", fields: [msBlogId], references: [id])
+  windowsBlogPost  WindowsBlogPost? @relation("WindowsBlogPostBookmarks", fields: [windowsBlogId], references: [id])
+  intunemsBlogPost  IntuneMSBlogPost? @relation("IntuneMSBlogPostBookmarks", fields: [intunemsBlogId], references: [id])
 }
 
 model Like {
-  id        Int      @id @default(autoincrement())
-  userId    String
-  blogId    Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-  blogPost  BlogPost @relation("likes", fields: [blogId], references: [id])
+  id          Int        @id @default(autoincrement())
+  userId      String
+  blogId      Int
+  msBlogId    Int?       // This is nullable because a like can be related to either a BlogPost or a MSBlogPost
+  windowsBlogId    Int?       // This is nullable because a bookmark can be related to either a BlogPost or a MSBlogPost
+  intunemsBlogId    Int?       // This is nullable because a bookmark can be related to either a BlogPost or a MSBlogPost
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  blogPost    BlogPost?  @relation("likes", fields: [blogId], references: [id])
+  msBlogPost  MSBlogPost? @relation("MSBlogPostLikes", fields: [msBlogId], references: [id])
+  windowsBlogPost  WindowsBlogPost? @relation("WindowsBlogPostLikes", fields: [windowsBlogId], references: [id])
+  intunemsBlogPost  IntuneMSBlogPost? @relation("IntuneMSBlogPostLikes", fields: [intunemsBlogId], references: [id])
 }
 
 
