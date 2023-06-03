@@ -78,6 +78,6 @@ async function fetchMSBlogPosts() {
   await browser.close();
 }
 
-fetchMSBlogPosts().catch(console.error);
+// fetchMSBlogPosts().catch(console.error);
 
 module.exports = { fetchMSBlogPosts };
