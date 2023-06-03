@@ -7,6 +7,8 @@ async function fetchWindowsBlogPosts() {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
+  console.log("Checking Windows IT Pro Blog...");
+
   await page.goto(
     "https://techcommunity.microsoft.com/t5/windows-it-pro-blog/bg-p/Windows10Blog",
     { waitUntil: "networkidle2" }

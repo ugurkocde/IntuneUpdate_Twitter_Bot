@@ -7,6 +7,8 @@ async function fetchIntuneMSBlogPosts() {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
+  console.log("Checking Intune MS Blogs...");
+
   await page.goto(
     "https://techcommunity.microsoft.com/t5/intune-customer-success/bg-p/IntuneCustomerSuccess",
     { waitUntil: "networkidle2" }
@@ -68,6 +70,6 @@ async function fetchIntuneMSBlogPosts() {
   await browser.close();
 }
 
-fetchIntuneMSBlogPosts().catch(console.error);
+// fetchIntuneMSBlogPosts().catch(console.error);
 
 module.exports = { fetchIntuneMSBlogPosts };

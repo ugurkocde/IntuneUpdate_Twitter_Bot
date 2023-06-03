@@ -7,6 +7,8 @@ async function fetchMSBlogPosts() {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
+  console.log("Checking MS Blogs...");
+
   await page.goto(
     "https://techcommunity.microsoft.com/t5/microsoft-intune-blog/bg-p/MicrosoftEndpointManagerBlog",
     { waitUntil: "networkidle2" }

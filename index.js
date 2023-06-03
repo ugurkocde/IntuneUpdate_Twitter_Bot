@@ -144,11 +144,11 @@ setInterval(async () => {
 }, 181 * 60 * 1000);
 
 // TWEET RESULTS EVERY 30 MINUTES
-setInterval(async () => {
+/* setInterval(async () => {
   await tweetNewRows();
   await tweetNewCommits();
   await tweetYoutubeVideo();
-}, 30 * 60 * 1000);
+}, 30 * 60 * 1000); */
 
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
