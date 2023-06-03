@@ -4,7 +4,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function fetchMSBlogPosts() {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
   const page = await browser.newPage();
 
   console.log("Checking MS Blogs...");
@@ -51,16 +51,25 @@ async function fetchMSBlogPosts() {
   // Now that we have the data, let's save it to the database.
   for (const post of data) {
     try {
-      await prisma.MSBlogPost.create({
-        data: {
-          title: post.title,
+      const existingPost = await prisma.MSBlogPost.findUnique({
+        where: {
           url: post.url,
-          date: post.date, // You may need to convert this to a Date object
-          author: "Microsoft",
-          pictureUrl: post.pictureUrl,
         },
       });
-      // console.log(`Saved to Supabase: ${post.title}`);
+
+      if (!existingPost) {
+        await prisma.MSBlogPost.create({
+          data: {
+            title: post.title,
+            url: post.url,
+            date: post.date,
+            author: "Microsoft",
+            pictureUrl: post.pictureUrl,
+          },
+        });
+      } else {
+        // console.log(`Post already exists: ${post.url}`);
+      }
     } catch (error) {
       console.error(`Error saving to Supabase: ${error.message}`);
     }
@@ -69,6 +78,6 @@ async function fetchMSBlogPosts() {
   await browser.close();
 }
 
-// fetchMSBlogPosts().catch(console.error);
+fetchMSBlogPosts().catch(console.error);
 
 module.exports = { fetchMSBlogPosts };
