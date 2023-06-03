@@ -41,6 +41,7 @@ async function fetchYouTubeVideos() {
         const url = `https://www.youtube.com/watch?v=${video.id.videoId}`;
         const title = video.snippet.title;
         const author = video.snippet.channelTitle;
+        const date = new Date(video.snippet.publishedAt);
         const tweeted = false;
         try {
           await prisma.YoutubeVideos.create({
@@ -49,6 +50,7 @@ async function fetchYouTubeVideos() {
               title,
               author,
               tweeted,
+              createdAt: new Date(date),
             },
           });
           console.log(`Added new video to database: ${title}`);
@@ -62,6 +64,6 @@ async function fetchYouTubeVideos() {
   }
 }
 
-fetchYouTubeVideos().catch((err) => console.error(err));
+// fetchYouTubeVideos().catch((err) => console.error(err));
 
-//module.exports = { fetchYouTubeVideos };
+module.exports = { fetchYouTubeVideos };
