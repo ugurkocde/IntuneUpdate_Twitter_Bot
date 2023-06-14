@@ -98,16 +98,6 @@ model Like {
 
 
 
-model WhatsNew {
-  id         Int          @id @default(autoincrement())
-  url        String       @unique
-  author     String
-  title      String
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  tweeted    Boolean      @default(false)
-}
-
 model YoutubeVideos {
   id             Int            @id @default(autoincrement())
   url            String         @unique
