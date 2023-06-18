@@ -72,13 +72,13 @@ async function fetchBlogPosts() {
       }
 
       // Summarize the content only for newly added blog posts
-      /*       const prompt = `Summarize the following text. Don´t use the title to summarize the article. Focus on the content. Your summary should be different from the Title. Dont add any tags or hashwords with # and dont tell people were to download or get a script. Dont use the title and header of the text in your response. Be precise as possible without exceeding 18 words in your response. \n\n${content}.`;
+      const prompt = `Summarize the following text. Don´t use the title to summarize the article. Focus on the content. Your summary should be different from the Title. Dont add any tags or hashwords with # and dont tell people were to download or get a script. Dont use the title and header of the text in your response. Be precise as possible without exceeding 18 words in your response. \n\n${content}.`;
       const aiResponse = await openai.createChatCompletion({
         model: "gpt-3.5-turbo",
         messages: [{ role: "user", content: `${prompt}` }],
         temperature: 0.2,
       });
-      const summary = aiResponse.data.choices[0].message.content; */
+      const summary = aiResponse.data.choices[0].message.content;
 
       console.log(`New Blog! -> ${title}`);
 
@@ -92,7 +92,7 @@ async function fetchBlogPosts() {
           content,
           url: item.link,
           author,
-          summary: "No Summary available",
+          summary: summary,
           twitterauthor,
           createdAt: new Date(item.pubDate),
         },
