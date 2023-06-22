@@ -53,20 +53,23 @@ async function fetchBlogPosts() {
       const $ = cheerio.load(response.data);
 
       title = $("title").text().trim();
-      content = $("content").text().trim();
 
-      if (content.length > 10000) {
-        content = content.slice(0, 10000);
+      // Attempt to extract content from both "content" and "content:encoded" tags
+      content =
+        $("content").text().trim() || $("content\\:encoded").text().trim();
+
+      if (content.length > 7000) {
+        content = content.slice(0, 7000);
       }
 
-      // If the content is empty, use Puppeteer to load the URL and extract the content
+      // If the content is still empty, use Puppeteer to load the URL and extract the content
       if (!content) {
         const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
         const page = await browser.newPage();
         await page.goto(item.link, { waitUntil: "networkidle2" });
         content = await page.$eval("*", (el) => el.innerText);
-        if (content.length > 10000) {
-          content = content.slice(0, 10000);
+        if (content.length > 7000) {
+          content = content.slice(0, 7000);
         }
         await browser.close();
       }
