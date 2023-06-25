@@ -133,5 +133,10 @@
     "url": "https://www.burgerhout.org/rss/",
     "twitterauthor": "@BurgerhoutJ",
     "author": "Jeroen Burgerhout"
+  },
+  {
+    "url": "https://manage-the.cloud/feed/",
+    "twitterauthor": "@JeroenEbus",
+    "author": "Jeroen Ebus"
   }
 ]
