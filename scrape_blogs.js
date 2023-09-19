@@ -110,6 +110,6 @@ async function fetchBlogPosts() {
   await prisma.$disconnect();
 }
 
-// etchBlogPosts().catch((err) => console.error(err));
+// fetchBlogPosts().catch((err) => console.error(err));
 
 module.exports = { fetchBlogPosts };
