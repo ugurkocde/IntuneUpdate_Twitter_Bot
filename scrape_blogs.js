@@ -64,7 +64,10 @@ async function fetchBlogPosts() {
 
       // If the content is still empty, use Puppeteer to load the URL and extract the content
       if (!content) {
-        const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
+        const browser = await puppeteer.launch({
+          headless: "new", // Opt in to the new headless mode
+          args: ['--no-sandbox']
+        });
         const page = await browser.newPage();
         await page.goto(item.link, { waitUntil: "networkidle2" });
         content = await page.$eval("*", (el) => el.innerText);
